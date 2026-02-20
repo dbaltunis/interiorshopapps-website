@@ -585,6 +585,9 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Lead endpoint (deploy interioapp-shopify to Heroku and update this URL)
+const LEAD_ENDPOINT = 'https://interioapp-shopify.herokuapp.com/api/lead';
+
 // Email forms (hero + bottom)
 // GitHub Pages is static — it cannot deliver leads server-side.
 // For NOW we:
@@ -607,19 +610,31 @@ function handleForm(formId, msgId) {
       localStorage.setItem('isa_waitlist', JSON.stringify(list));
     }
 
-    // Actual delivery (mailto)
-    const subject = encodeURIComponent(`New Waitlist Lead: ${email}`);
-    const body = encodeURIComponent(
-      `New waitlist lead captured on interiorshopapps.com\n\nEmail: ${email}\n\n(Reply to this email to follow up.)\n`
-    );
-    const mailto = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
+    // Try server-side first (best). If it fails, fall back to mailto.
+    (async () => {
+      try {
+        const res = await fetch(LEAD_ENDPOINT + '?source=waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'waitlist' })
+        });
+        if (res.ok) {
+          msg.textContent = "You're in. We'll be in touch.";
+          msg.className = 'form-msg success';
+          form.querySelector('input').value = '';
+          return;
+        }
+      } catch (e) {}
 
-    // Try to open the user's mail client
-    window.location.href = mailto;
-
-    msg.textContent = "Thanks — your email app should open so you can send the enquiry.";
-    msg.className = 'form-msg success';
-    form.querySelector('input').value = '';
+      const subject = encodeURIComponent(`New Waitlist Lead: ${email}`);
+      const body = encodeURIComponent(
+        `New waitlist lead captured on interiorshopapps.com\n\nEmail: ${email}\n\n(Reply to this email to follow up.)\n`
+      );
+      window.location.href = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
+      msg.textContent = "Thanks — your email app should open so you can send the enquiry.";
+      msg.className = 'form-msg success';
+      form.querySelector('input').value = '';
+    })();
   });
 }
 handleForm('heroForm', 'heroMsg');
@@ -680,13 +695,30 @@ function submitLead() {
     `Notes: ${lead.notes}\nSubmitted: ${lead.submitted}`
   );
 
-  // Deliver the enquiry (mailto fallback until backend exists)
-  // This opens the visitor's email client with a pre-filled message.
-  const mailLink = document.createElement('a');
-  mailLink.href = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
-  mailLink.style.display = 'none';
-  document.body.appendChild(mailLink);
-  mailLink.click();
+  // Try server-side first (best). If it fails, fall back to mailto.
+  (async () => {
+    try {
+      const res = await fetch(LEAD_ENDPOINT + '?source=lead-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: lead.email,
+          name: lead.name,
+          company: lead.company,
+          phone: lead.phone,
+          message: `Products: ${lead.products}; Region: ${lead.region}; Online: ${lead.online}; Interest: ${lead.interest}; Budget: ${lead.budget}; Callback: ${lead.callback}; Notes: ${lead.notes}`,
+          source: 'lead-form'
+        })
+      });
+      if (res.ok) return; // no mailto needed
+    } catch (e) {}
+
+    const mailLink = document.createElement('a');
+    mailLink.href = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
+    mailLink.style.display = 'none';
+    document.body.appendChild(mailLink);
+    mailLink.click();
+  })();
 
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
