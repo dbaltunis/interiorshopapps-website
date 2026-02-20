@@ -585,25 +585,40 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Quick email forms (hero + bottom)
+// Email forms (hero + bottom)
+// GitHub Pages is static — it cannot deliver leads server-side.
+// For NOW we:
+// 1) store locally for visitor confirmation
+// 2) open a pre-filled email to hello@interiorshopapps.com so Darius receives the enquiry
+// Next step: wire these forms to a real backend endpoint (Heroku) for true server-side notify + auto-reply.
 function handleForm(formId, msgId) {
   const form = document.getElementById(formId);
   const msg = document.getElementById(msgId);
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = form.querySelector('input[type="email"]').value.trim();
     if (!email) return;
-    // Store locally + will be sent to backend when available
+
+    // Local confirmation
     const list = JSON.parse(localStorage.getItem('isa_waitlist') || '[]');
-    if (list.includes(email)) {
-      msg.textContent = "You're already on the list!";
-      msg.className = 'form-msg success';
-    } else {
+    if (!list.includes(email)) {
       list.push(email);
       localStorage.setItem('isa_waitlist', JSON.stringify(list));
-      msg.textContent = "You're in. We'll be in touch soon.";
-      msg.className = 'form-msg success';
     }
+
+    // Actual delivery (mailto)
+    const subject = encodeURIComponent(`New Waitlist Lead: ${email}`);
+    const body = encodeURIComponent(
+      `New waitlist lead captured on interiorshopapps.com\n\nEmail: ${email}\n\n(Reply to this email to follow up.)\n`
+    );
+    const mailto = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
+
+    // Try to open the user's mail client
+    window.location.href = mailto;
+
+    msg.textContent = "Thanks — your email app should open so you can send the enquiry.";
+    msg.className = 'form-msg success';
     form.querySelector('input').value = '';
   });
 }
@@ -665,12 +680,13 @@ function submitLead() {
     `Notes: ${lead.notes}\nSubmitted: ${lead.submitted}`
   );
 
-  // Silent notification attempt via mailto
+  // Deliver the enquiry (mailto fallback until backend exists)
+  // This opens the visitor's email client with a pre-filled message.
   const mailLink = document.createElement('a');
   mailLink.href = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
   mailLink.style.display = 'none';
   document.body.appendChild(mailLink);
-  // Don't auto-click mailto as it opens email client — leads stored in localStorage for now
+  mailLink.click();
 
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
