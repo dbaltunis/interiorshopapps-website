@@ -77,7 +77,8 @@ a.product{display:block;color:inherit;text-decoration:none}
 @media (max-width: 640px){.catalog{grid-template-columns:1fr}}
 .product{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(15,23,41,0.55);transition:transform .2s,border-color .2s,box-shadow .2s}
 .product:hover{transform:translateY(-2px);border-color:rgba(201,169,110,0.35);box-shadow:0 10px 30px rgba(0,0,0,.22)}
-.product .thumb{height:120px;background:radial-gradient(circle at 30% 20%, rgba(201,169,110,0.18), transparent 55%),radial-gradient(circle at 80% 60%, rgba(184,115,51,0.16), transparent 52%),linear-gradient(135deg, rgba(30,42,74,1), rgba(15,23,41,1));border-bottom:1px solid var(--border)}
+.product .thumb{height:120px;background:radial-gradient(circle at 30% 20%, rgba(201,169,110,0.18), transparent 55%),radial-gradient(circle at 80% 60%, rgba(184,115,51,0.16), transparent 52%),linear-gradient(135deg, rgba(30,42,74,1), rgba(15,23,41,1));border-bottom:1px solid var(--border);background-size:cover;background-position:center;background-repeat:no-repeat}
+.product .thumb.has-img{background-blend-mode:overlay,overlay,normal,normal}
 .product .body{padding:18px 18px 16px}
 .product h3{font-size:1.05rem;line-height:1.25;margin-bottom:8px}
 .product .price{display:flex;align-items:baseline;gap:8px;margin:10px 0 12px}
@@ -429,7 +430,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
     <!-- Clear, buyer-friendly services (each links to a product page) -->
     <div class="catalog reveal">
       <a class="product" href="/services/made-to-measure-calculator/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/001-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Made-to-Measure Calculator (Curtains / Blinds / Shutters)</h3>
           <p style="color:var(--slate);font-size:0.92rem">Your pricing rules turned into a storefront quoting flow customers can actually use.</p>
@@ -444,7 +445,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
       </a>
 
       <a class="product" href="/services/custom-shopify-app-mvp/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/002-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Custom Shopify App MVP (Private App)</h3>
           <p style="color:var(--slate);font-size:0.92rem">A real, usable MVP shipped with clean scope and a predictable delivery plan.</p>
@@ -459,7 +460,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
       </a>
 
       <a class="product" href="/services/shopify-store-build-window-furnishings/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/003-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Shopify Store Build (Window Furnishings)</h3>
           <p style="color:var(--slate);font-size:0.92rem">Theme setup, structure, and launch QA — built for made-to-measure products.</p>
@@ -474,7 +475,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
       </a>
 
       <a class="product" href="/services/product-catalog-setup/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/004-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Product Catalog Setup (up to 50 SKUs)</h3>
           <p style="color:var(--slate);font-size:0.92rem">Clean product data, variants, collections, tags, and QA.</p>
@@ -489,7 +490,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
       </a>
 
       <a class="product" href="/services/seo-speed-tune/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/001-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>SEO + Speed Tune (one-time)</h3>
           <p style="color:var(--slate);font-size:0.92rem">Fix obvious blockers, improve load time, and tidy technical SEO.</p>
@@ -504,7 +505,7 @@ footer .copy { font-size: 0.75rem; color: var(--slate); opacity: 0.6; }
       </a>
 
       <a class="product" href="/services/maintenance-plan/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/002-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Maintenance Plan (monthly)</h3>
           <p style="color:var(--slate);font-size:0.92rem">Keep things healthy while you sell. Small fixes shipped steadily.</p>

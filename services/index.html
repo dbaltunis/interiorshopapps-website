@@ -32,7 +32,8 @@
 
     .card{display:block;text-decoration:none;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(15,23,41,.55);transition:transform .2s,border-color .2s,box-shadow .2s}
     .card:hover{transform:translateY(-2px);border-color:rgba(201,169,110,.35);box-shadow:0 10px 30px rgba(0,0,0,.22)}
-    .thumb{height:92px;background:radial-gradient(circle at 30% 20%, rgba(201,169,110,0.18), transparent 55%),radial-gradient(circle at 80% 60%, rgba(184,115,51,0.16), transparent 52%),linear-gradient(135deg, rgba(30,42,74,1), rgba(15,23,41,1));border-bottom:1px solid var(--border)}
+    .thumb{height:92px;background:radial-gradient(circle at 30% 20%, rgba(201,169,110,0.18), transparent 55%),radial-gradient(circle at 80% 60%, rgba(184,115,51,0.16), transparent 52%),linear-gradient(135deg, rgba(30,42,74,1), rgba(15,23,41,1));border-bottom:1px solid var(--border);background-size:cover;background-position:center;background-repeat:no-repeat}
+.thumb.has-img{background-blend-mode:overlay,overlay,normal,normal}
     .body{padding:16px 16px 14px}
     .body h3{font-size:1.05rem;line-height:1.25;margin-bottom:8px}
     .body p{color:var(--slate);font-size:.92rem}
@@ -68,7 +69,7 @@
 
     <section class="grid" aria-label="Services list">
       <a class="card" href="/services/made-to-measure-calculator/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/001-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Made-to-Measure Calculator</h3>
           <p>Curtains / blinds / shutters quoting flow + pricing rules.</p>
@@ -77,7 +78,7 @@
       </a>
 
       <a class="card" href="/services/custom-shopify-app-mvp/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/002-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Custom Shopify App MVP</h3>
           <p>Private app MVP: admin UI, data model, and install.</p>
@@ -86,7 +87,7 @@
       </a>
 
       <a class="card" href="/services/shopify-store-build-window-furnishings/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/003-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Shopify Store Build (Window Furnishings)</h3>
           <p>Theme setup, structure, trust, and launch QA.</p>
@@ -95,7 +96,7 @@
       </a>
 
       <a class="card" href="/services/product-catalog-setup/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/004-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Product Catalog Setup (≤50 SKUs)</h3>
           <p>Variants, collections, tags, and QA polish.</p>
@@ -104,7 +105,7 @@
       </a>
 
       <a class="card" href="/services/seo-speed-tune/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/001-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>SEO + Speed Tune</h3>
           <p>Fix obvious blockers and improve load time.</p>
@@ -113,7 +114,7 @@
       </a>
 
       <a class="card" href="/services/maintenance-plan/">
-        <div class="thumb"></div>
+        <div class="thumb has-img" style="background-image:url('/services/assets/002-cohesive-set-of-premium-abstract-banner-.webp')"></div>
         <div class="body">
           <h3>Maintenance Plan</h3>
           <p>Ongoing support, monitoring, and small fixes.</p>
