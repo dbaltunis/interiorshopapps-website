@@ -691,8 +691,10 @@ function renderTestimonials(){
 renderCatalog();
 renderTestimonials();
 
-// Lead endpoint (deploy interioapp-shopify to Heroku and update this URL)
-const LEAD_ENDPOINT = 'https://interioapp-shopify.herokuapp.com/api/lead';
+// Lead endpoint (optional).
+// NOTE: The previously-referenced Heroku app URL was returning a "No such app" page.
+// Leave blank to avoid failed network calls until a real backend is deployed.
+const LEAD_ENDPOINT = '';
 
 // Picking a service/product pre-fills the enquiry form.
 window.__isaPick = function(serviceName) {
@@ -733,21 +735,23 @@ function handleForm(formId, msgId) {
       localStorage.setItem('isa_waitlist', JSON.stringify(list));
     }
 
-    // Try server-side first (best). If it fails, fall back to mailto.
+    // Optional server-side submit. If not configured (or it fails), fall back to mailto.
     (async () => {
-      try {
-        const res = await fetch(LEAD_ENDPOINT + '?source=waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, source: 'waitlist' })
-        });
-        if (res.ok) {
-          msg.textContent = "You're in. We'll be in touch.";
-          msg.className = 'form-msg success';
-          form.querySelector('input').value = '';
-          return;
-        }
-      } catch (e) {}
+      if (LEAD_ENDPOINT) {
+        try {
+          const res = await fetch(LEAD_ENDPOINT + '?source=waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source: 'waitlist' })
+          });
+          if (res.ok) {
+            msg.textContent = "You're in. We'll be in touch.";
+            msg.className = 'form-msg success';
+            form.querySelector('input').value = '';
+            return;
+          }
+        } catch (e) {}
+      }
 
       const subject = encodeURIComponent(`New Waitlist Lead: ${email}`);
       const body = encodeURIComponent(
@@ -818,23 +822,25 @@ function submitLead() {
     `Notes: ${lead.notes}\nSubmitted: ${lead.submitted}`
   );
 
-  // Try server-side first (best). If it fails, fall back to mailto.
+  // Optional server-side submit. If not configured (or it fails), fall back to mailto.
   (async () => {
-    try {
-      const res = await fetch(LEAD_ENDPOINT + '?source=lead-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: lead.email,
-          name: lead.name,
-          company: lead.company,
-          phone: lead.phone,
-          message: `Products: ${lead.products}; Region: ${lead.region}; Online: ${lead.online}; Interest: ${lead.interest}; Budget: ${lead.budget}; Callback: ${lead.callback}; Notes: ${lead.notes}`,
-          source: 'lead-form'
-        })
-      });
-      if (res.ok) return; // no mailto needed
-    } catch (e) {}
+    if (LEAD_ENDPOINT) {
+      try {
+        const res = await fetch(LEAD_ENDPOINT + '?source=lead-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: lead.email,
+            name: lead.name,
+            company: lead.company,
+            phone: lead.phone,
+            message: `Products: ${lead.products}; Region: ${lead.region}; Online: ${lead.online}; Interest: ${lead.interest}; Budget: ${lead.budget}; Callback: ${lead.callback}; Notes: ${lead.notes}`,
+            source: 'lead-form'
+          })
+        });
+        if (res.ok) return; // no mailto needed
+      } catch (e) {}
+    }
 
     const mailLink = document.createElement('a');
     mailLink.href = `mailto:hello@interiorshopapps.com?subject=${subject}&body=${body}`;
